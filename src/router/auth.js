@@ -36,7 +36,7 @@ router.post('/addNote', async (req, res) => {
       await dataExist.save();
     }
     else {
-      const newNote = new Add({ email, title, message });
+      const newNote = new Add({ email});
       await newNote.save();
       const dataExistornot = await Add.findOne({ email });
       const userMessage = await dataExistornot.addMessage(title, message);
