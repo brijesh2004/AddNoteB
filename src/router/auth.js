@@ -11,7 +11,7 @@ router.use(cookiesParsar());
 router.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000'],
+    origin: ['https://addnotess.onrender.com'],
     methods: ['POST', 'GET'],
     allowedHeaders: ["Content-Type", "Authorization"]
   }))
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
   res.send("router home page");
 });
 router.post('/addNote', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', `http://localhost:3000`);
+  res.header('Access-Control-Allow-Origin', `https://addnotess.onrender.com`);
   try {
     const { email, title, message } = req.body;
 
@@ -52,7 +52,7 @@ router.post('/addNote', async (req, res) => {
 
 
 router.post('/pullthedata', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', `http://localhost:3000`);
+  res.header('Access-Control-Allow-Origin', `https://addnotess.onrender.com`);
   try {
     const { email } = req.body;
     const dataExist = await Add.find({ email });
