@@ -20,6 +20,8 @@ router.get("/", (req, res) => {
 
   res.send("router home page");
 });
+
+
 router.post('/addNote', async (req, res) => {
   res.header('Access-Control-Allow-Origin', `https://addnotess.onrender.com`);
   try {
@@ -27,28 +29,29 @@ router.post('/addNote', async (req, res) => {
 
     if (!email || !title || !message) {
       console.log("error in add Notes Page");
-      return res.status(401).json({ message: "please fill all the fields" });
+      return res.status(401).json({ message: "Please fill in all the fields." });
     }
-    const dataExist = await Add.findOne({ email });
 
-    if (dataExist) {
-      const userMessage = await dataExist.addMessage(title, message);
+    let dataExist = await Add.findOne({ email });
+
+    if (!dataExist) {
+      const newNote = new Add({ email });
+      // newNote.messages.push({ title: title, message: message });
+      await newNote.addMessage(title , message);
+      await newNote.save();
+    } else {
+      await dataExist.addMessage(title , message);
+      // dataExist.messages.push({ title: title, message: message });
       await dataExist.save();
     }
-    else {
-      const newNote = new Add({ email});
-      await newNote.save();
-      // const dataExistornot = await Add.findOne({ email });
-      const userMessage = await newNote.addMessage(title, message);
-      await newNote.save();
-    }
 
-    res.status(201).json({ message: "Note saved successfully" });
+    res.status(201).json({ message: "Note saved successfully." });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: err });
+    res.status(500).json({ err });
   }
 });
+
 
 
 router.post('/pullthedata', async (req, res) => {
